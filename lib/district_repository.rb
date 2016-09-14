@@ -1,4 +1,3 @@
-require 'pry'
 require 'csv'
 require_relative 'district'
 require_relative 'enrollment_repository'
@@ -26,13 +25,8 @@ class DistrictRepository
       if check_for_objects == nil
         districts[name] = District.new(data, self)
       end
-      #  verify_that_row_and_location_exist(row[:location])
     end
   end
-
-  # def verify_that_row_and_location_exist(district_name)
-  #   districts[district_name.upcase] = District.new({name: district_name}) if districts != nil?
-  # end
 
 
   def find_by_name(name)
