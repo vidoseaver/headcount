@@ -28,7 +28,6 @@ class DistrictRepository
     end
   end
 
-
   def find_by_name(name)
     districts[name]
   end
