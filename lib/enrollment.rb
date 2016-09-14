@@ -3,9 +3,8 @@ require 'pry'
 
 
 class Enrollment
-  attr_reader :kindergarten_enrollment_percentage, :name 
+  attr_reader :kindergarten_enrollment_percentage, :name
   def initialize(new_hash)
-    # @new_hash = new_hash
     @name = new_hash[:name].upcase
     @kindergarten_enrollment_percentage = new_hash[:kindergarten_participation]
   end

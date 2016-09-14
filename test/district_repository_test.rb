@@ -32,8 +32,8 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_find_all_matching_returns_aray_of_districts_containing_word_fragment
     districts = @district_repo.find_all_matching("rado")
-
-    assert_equal true, districts.all? { |district| district.name.include?("rado") }
+    
+    assert_equal true, districts.all? { |district| district.name.include?("RADO") }
   end
 
   def test_find_all_matching_distring_word_fragement
