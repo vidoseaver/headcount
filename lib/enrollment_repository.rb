@@ -7,12 +7,13 @@ class EnrollmentRepository
     @enrollments = {}
   end
 
-  def load_data(file)
-    generate_enrollment_repo(file)
+  def load_data(path)
+    generate_enrollment_repo(path)
+    generate_highschool_enrollment(path)
   end
 
-  def generate_enrollment_repo(paths)
-    file = paths[:enrollment][:kindergarten]
+  def generate_enrollment_repo(path)
+    file = path[:enrollment][:kindergarten]
     contents = CSV.read(file, headers: true, header_converters: :symbol)
     contents.each do |row|
       add_data_to_enrollment(row)        if !find_by_name(row[:location]).nil?
@@ -30,6 +31,24 @@ class EnrollmentRepository
     name = row[:location].upcase
     er = enrollments[name]
     er.kindergarten_enrollment_percentage.merge!({row[:timeframe].to_i =>
+    row[:data].to_f})
+  end
+
+  #starts highschool
+  def generate_highschool_enrollment(paths)
+    return if paths[:enrollment][:high_school_graduation].nil?
+    file = paths[:enrollment][:high_school_graduation]
+    contents = CSV.read(file, headers: true, header_converters: :symbol)
+    contents.each do |row|
+    add_data_to_high_school_enrollment(row)
+    end
+  end
+
+
+  def add_data_to_high_school_enrollment(row)
+    name = row[:location].upcase
+    enrollment = enrollments[name]
+    enrollment.high_school_graduation.merge!({row[:timeframe].to_i =>
     row[:data].to_f})
   end
 

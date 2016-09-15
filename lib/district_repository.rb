@@ -35,7 +35,7 @@ class DistrictRepository
   end
 
   def populate_kindergarten_enrollments(path)
-    @enrollment_repository.generate_enrollment_repo(path)
+    @enrollment_repository.load_data(path)
   end
 
   def find_by_name(name)
