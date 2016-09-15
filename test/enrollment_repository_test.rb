@@ -6,6 +6,12 @@ require './lib/enrollment_repository'
 
 class EnrollmentRepositoryTest < Minitest::Test
 
+  def setup
+    @district_repo = DistrictRepository.new
+    @district_repo.load_data({enrollment: {kindergarten: "./data/Kindergartners in full-day program.csv"}})
+    @enrollment_repository = @district_repo.enrollment_repository
+  end
+
   def test_that_destrict_repo_is_a_class
     enrollment_repository= EnrollmentRepository.new
 
@@ -36,4 +42,6 @@ class EnrollmentRepositoryTest < Minitest::Test
       assert_equal (assertion), enrollment_repository.find_by_name("COLORADO").kindergarten_enrollment_percentage
 
   end
+
+
 end

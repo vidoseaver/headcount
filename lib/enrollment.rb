@@ -20,4 +20,10 @@ class Enrollment
   def wtt(number)
     (number*1000).floor / 1000.0
   end
+
+  def kindergarten_participation_rate_average
+    added_percetages = @kindergarten_enrollment_percentage.values.reduce(:+)
+    long_total = added_percetages / @kindergarten_enrollment_percentage.length
+    wtt(long_total)
+  end
 end

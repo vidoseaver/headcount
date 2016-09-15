@@ -4,6 +4,8 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/district_repository'
 require './lib/district'
+require './lib/enrollment'
+require './lib/enrollment_repository'
 
 
 class DistrictRepositoryTest < Minitest::Test
@@ -46,4 +48,18 @@ class DistrictRepositoryTest < Minitest::Test
      refute @district_repo.districts.nil?
   end
 
+  def test_load_data_can_make_the_enrollment_repo_generate_enrollments
+    path = {enrollment: {kindergarten: "./data/Kindergartners in full-day program.csv"}}
+   @district_repo.populate_kindergarten_enrollments(path)
+
+   assert_equal 181, @district_repo.enrollment_repository.enrollments.count
+  end
+
+  def test_can_find_a_enrollment_by_name
+    assert_instance_of Enrollment, @district_repo.find_enrollment_by_name("Colorado")
+  end
+
+  def test_district_repo_has_head_count_analyst
+    assert_instance_of HeadcountAnalyst, @district_repo.headcount_analyst
+  end
 end
