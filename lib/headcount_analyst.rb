@@ -49,7 +49,8 @@ class HeadcountAnalyst
     graduation_variation =high_school_rate_variation(name,:against =>"COLORADO")
     kind_variation =
     kindergarten_participation_rate_variation(name, :against => "COLORADO")
-    kind_variation/graduation_variation == 0 ? 0 : kind_variation/graduation_variation
+    return 0 if kind_variation/graduation_variation == 0
+    kind_variation/graduation_variation
   end
 
   def correlates?(number)
@@ -58,11 +59,19 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(name)
-    name = name[:for]
+    name.keys.first == :for ? name = name[:for] : name = name[:across]
     districts = @district_repo.districts.keys
     return all_district_checker("variation_correlation") if name == "STATEWIDE"
     return variation_correlation(name) if districts.include?(name)
+    certain_district_checker("variation_correlation",name) if name.class==Array
+  end
 
+  def certain_district_checker(method, district_names)
+    districts = district_names.map {|name| find_district_by_name(name)}
+    truths = districts.map do |district|
+      variation = self.send(method, district.name)
+    end
+    above_seventy?(truths.count(true)/truths.count.to_f)
   end
 
   def all_district_checker(method)

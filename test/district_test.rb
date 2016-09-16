@@ -17,7 +17,7 @@ class DistrictTest < Minitest::Test
     a = District.new({:name => "ACADEMY 20"})
 
     assert_equal District, a.class
-    end
+  end
 
   def test_name_method_returns_upcase_district_name
     a = District.new({:name => "academy 20"})
