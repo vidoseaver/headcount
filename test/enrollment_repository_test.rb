@@ -47,7 +47,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   def test_high_school_graduation_percentage_is_populated
     enrollments = @enrollment_repository.enrollments.values
 
-     assert enrollments.any? do |enrollment|
+     refute enrollments.any? do |enrollment|
        enrollment.high_school_graduation.nil?
      end
   end

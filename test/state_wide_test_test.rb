@@ -2,18 +2,18 @@ require 'simplecov'
 SimpleCov.start
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/state_wide_testing_repository'
-require './lib/state_wide_testing'
+require './lib/state_wide_test_repository'
+require './lib/state_wide_test'
 require 'pry'
 
-class StateWideTestingTest < Minitest::Test
+class StateWideTestTest < Minitest::Test
 
   def setup
-    @state_wide_testing = StateWideTesting.new("name", "parent repo")
+    @state_wide_testing = StateWideTest.new("name", "parent repo")
   end
 
   def test_test_state_wide_testing_repo_is_a_class
-      assert_equal StateWideTesting, @state_wide_testing.class
+      assert_equal StateWideTest, @state_wide_testing.class
   end
 
   def test_it_has_a_name
@@ -25,7 +25,7 @@ class StateWideTestingTest < Minitest::Test
   end
 
   def test_can_add_to_third_grade
-    
+
   end
 
   def test_third_grade_initializes_with_empty_hash
