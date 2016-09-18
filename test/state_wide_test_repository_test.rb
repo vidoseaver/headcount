@@ -60,7 +60,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     end
      row = {location: "COLORADO", score: "Math", timeframe: 2005, data: 0.083 }
 
-    expected = {"2008"=>{"Math"=>"0.697", "Reading"=>"0.703", "Writing"=>"0.501"}, "2009"=>{"Math"=>"0.691", "Reading"=>"0.726", "Writing"=>"0.536"}, "2010"=>{"Math"=>"0.706", "Reading"=>"0.698", "Writing"=>"0.504"}, "2011"=>{"Math"=>"0.696", "Reading"=>"0.728", "Writing"=>"0.513"}, "2012"=>{"Reading"=>"0.739", "Math"=>"0.71", "Writing"=>"0.525"}, "2013"=>{"Math"=>"0.72295", "Reading"=>"0.73256", "Writing"=>"0.50947"}, "2014"=>{"Math"=>"0.71589", "Reading"=>"0.71581", "Writing"=>"0.51072"}, 2005=>{"Math"=>0.083}}
+    expected = {"2008"=>{"Math"=>0.697, "Reading"=>0.703, "Writing"=>0.501}, "2009"=>{"Math"=>0.691, "Reading"=>0.726, "Writing"=>0.536}, "2010"=>{"Math"=>0.706, "Reading"=>0.698, "Writing"=>0.504}, "2011"=>{"Math"=>0.696, "Reading"=>0.728, "Writing"=>0.513}, "2012"=>{"Reading"=>0.739, "Math"=>0.71, "Writing"=>0.525}, "2013"=>{"Math"=>0.72295, "Reading"=>0.73256, "Writing"=>0.50947}, "2014"=>{"Math"=>0.71589, "Reading"=>0.71581, "Writing"=>0.51072}, 2005=>{"Math"=>0.083}}
     assert_equal expected, @state_wide_repo.populate_state_wide_test_1(row, "third_grade")
   end
 
@@ -71,7 +71,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     end
      row = {location: "COLORADO", score: "Math", timeframe: 2005, data: 0.083 }
 
-    expected = {"2008"=>{"Math"=>"0.469", "Reading"=>"0.703", "Writing"=>"0.529"}, "2009"=>{"Math"=>"0.499", "Reading"=>"0.726", "Writing"=>"0.528"}, "2010"=>{"Math"=>"0.51", "Reading"=>"0.679", "Writing"=>"0.549"}, "2011"=>{"Reading"=>"0.67", "Math"=>"0.513", "Writing"=>"0.543"}, "2012"=>{"Math"=>"0.515", "Writing"=>"0.548", "Reading"=>"0.671"}, "2013"=>{"Math"=>"0.51482", "Reading"=>"0.66888", "Writing"=>"0.55788"}, "2014"=>{"Math"=>"0.52385", "Reading"=>"0.66351", "Writing"=>"0.56183"}, 2005=>{"Math"=>0.083}}
+    expected = {"2008"=>{"Math"=>0.469, "Reading"=>0.703, "Writing"=>0.529}, "2009"=>{"Math"=>0.499, "Reading"=>0.726, "Writing"=>0.528}, "2010"=>{"Math"=>0.51, "Reading"=>0.679, "Writing"=>0.549}, "2011"=>{"Reading"=>0.67, "Math"=>0.513, "Writing"=>0.543}, "2012"=>{"Math"=>0.515, "Writing"=>0.548, "Reading"=>0.671}, "2013"=>{"Math"=>0.51482, "Reading"=>0.66888, "Writing"=>0.55788}, "2014"=>{"Math"=>0.52385, "Reading"=>0.66351, "Writing"=>0.56183}, 2005=>{"Math"=>0.083}}
     assert_equal expected, @state_wide_repo.populate_state_wide_test_1(row, "eighth_grade")
   end
 

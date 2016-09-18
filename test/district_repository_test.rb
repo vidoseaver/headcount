@@ -55,7 +55,7 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_load_data_can_make_the_enrollment_repo_generate_enrollments
     path = {enrollment: {kindergarten: "./data/Kindergartners in full-day program.csv"}}
-   @district_repo.populate_kindergarten_enrollments(path)
+   @district_repo.populate_enrollment_repository(path)
 
    assert_equal 181, @district_repo.enrollment_repository.enrollments.count
   end
@@ -66,5 +66,9 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_district_repo_has_head_count_analyst
     assert_instance_of HeadcountAnalyst, @district_repo.headcount_analyst
+  end
+
+  def test_initialize_with_econompoic_profile_repo
+      assert_instance_of EconomicProfileRepository, @district_repo.economic_profile_repository
   end
 end

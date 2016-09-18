@@ -46,9 +46,9 @@ class StatewideTestRepository
   def populate_state_wide_test_1(row, category)
     testing = find_by_name(row[:location])
     if testing.send(category)[row[:timeframe]].empty?
-      testing.send(category).merge!(row[:timeframe] => {row[:score] => row[:data]})
+      testing.send(category).merge!(row[:timeframe] => {row[:score] => row[:data].to_f})
     else
-      testing.send(category)[(row[:timeframe])].merge!({row[:score] => row[:data]})
+      testing.send(category)[(row[:timeframe])].merge!({row[:score] => row[:data].to_f})
     end
   end
 

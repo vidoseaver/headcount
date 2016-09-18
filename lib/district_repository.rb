@@ -3,6 +3,7 @@ require_relative 'district'
 require_relative 'enrollment_repository'
 require_relative 'headcount_analyst'
 require_relative 'state_wide_test_repository'
+require_relative 'economic_profile_repository'
 require 'pry'
 
 
@@ -10,23 +11,25 @@ class DistrictRepository
   attr_reader :districts,
               :enrollment_repository,
               :headcount_analyst,
-              :statewide_test_repository
-
+              :statewide_test_repository,
+              :economic_profile_repository
   def initialize(districts = {})
     @districts = districts
-    @enrollment_repository = EnrollmentRepository.new
-    @headcount_analyst = HeadcountAnalyst.new(self)
-    @statewide_test_repository = StatewideTestRepository.new
+    @headcount_analyst           = HeadcountAnalyst.new(self)
+    @enrollment_repository       = EnrollmentRepository.new
+    @statewide_test_repository   = StatewideTestRepository.new
+    @economic_profile_repository = EconomicProfileRepository.new
   end
 
 
-  def load_data(paths)
-    generate_district_repo(paths)
-    populate_kindergarten_enrollments(paths)
-    statewide_test_repository.load_data(paths)
+  def load_data(path)
+    generate_district_repository(path)            if path.include?(:enrollment)
+    populate_enrollment_repository(path)          if path.include?(:enrollment)
+    populate_statewide_repository(path)           if path.include?(:statewide_testing)
+    populate_economic_profile_repository(path)    if path.include?(:economic_profile)
   end
 
-  def generate_district_repo(paths)
+  def generate_district_repository(paths)
     file = paths[:enrollment][:kindergarten]
     CSV.foreach(file, headers: true, header_converters: :symbol) do |row|
       name = row[:location].upcase
@@ -38,8 +41,16 @@ class DistrictRepository
     end
   end
 
-  def populate_kindergarten_enrollments(path)
+  def populate_enrollment_repository(path)
     @enrollment_repository.load_data(path)
+  end
+
+  def populate_statewide_repository(path)
+    @statewide_test_repository.load_data(path)
+  end
+
+  def populate_economic_profile_repository(path)
+    economic_profile_repository.load_data(path)
   end
 
   def find_by_name(name)

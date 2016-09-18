@@ -1,7 +1,7 @@
 require "pry"
 
 class HeadcountAnalyst
-  def initialize(district_repo = district_repo)
+  def initialize(district_repo = "district_repo")
     @district_repo = district_repo
   end
 
