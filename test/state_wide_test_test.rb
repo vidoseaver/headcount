@@ -80,4 +80,40 @@ class StatewideTestTest < Minitest::Test
     expected = {"2011"=>{:math=>0.451, :reading=>0.688, :writing=>0.503}, "2012"=>{:math=>0.467, :reading=>0.75, :writing=>0.528}, "2013"=>{:math=>0.473, :reading=>0.738, :writing=>0.531}, "2014"=>{:math=>0.418, :reading=>0.006, :writing=>0.453}}
    assert_equal expected, testing.proficient_by_race_or_ethnicity(:hispanic)
   end
+
+  def test_can_return_unknown_data_error_if_subject_doesnt_exist
+    assert_raises UnknownDataError do
+    @colorado.proficient_for_subject_by_grade_in_year(:science, 3, 2008)
+    end
+  end
+
+  def test_can_return_unknown_data_error_if_grade_doest_exist
+    assert_raises UnknownDataError do
+    @colorado.proficient_for_subject_by_grade_in_year(:math, 5, 2008)
+    end
+  end
+
+  def test_can_return_unknown_data_error_if_year_doest_exist
+    assert_raises UnknownDataError do
+    @colorado.proficient_for_subject_by_grade_in_year(:math, 3, 2016)
+    end
+  end
+
+
+  def test_proficient_for_subject_by_race_in_year
+      testing = @state_wide_repo.find_by_name("ACADEMY 20")
+
+      assert_equal 0.653, testing.proficient_for_subject_by_grade_in_year(:math, 8, 2011)
+  end
+
+
+
+  # def test_dummy
+  #   testing = @state_wide_repo.find_by_name("AULT-HIGHLAND RE-9")
+  # assert_equal 0.611, testing.proficient_for_subject_by_race_in_year(:math, :white, 2012)
+  # assert_equal 0.310, testing.proficient_for_subject_by_race_in_year(:math, :hispanic, 2014)
+  # assert_equal 0.794, testing.proficient_for_subject_by_race_in_year(:reading, :white, 2013)
+  # assert_equal 0.278, testing.proficient_for_subject_by_race_in_year(:writing, :hispanic, 2014)
+
+
 end

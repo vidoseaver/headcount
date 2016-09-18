@@ -35,6 +35,22 @@ class StatewideTest
     end
   end
 
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+    return raise UnknownDataError if !value_checker?(subject,grade,year)
+    grade == 3 ?  grade = third_grade : grade = eighth_grade
+    wtt((grade[year.to_s][subject.to_s.capitalize]).to_f)
+  end
+
+  def value_checker?(subject,grade,year)
+    return false unless grade == 3 || grade == 8
+    return false unless subject == :math || subject == :reading || subject == :writing
+    grade == 3 ?  grade = third_grade : grade = eighth_grade
+    combined = grade.keys.zip(grade.values)
+    combined.any? do |set|
+      set.first == year.to_s && set.last.include?(subject.to_s.capitalize)
+    end
+  end
+
   def wtt(number)
     (number*1000).floor / 1000.0
   end
