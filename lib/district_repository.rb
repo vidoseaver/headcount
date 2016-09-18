@@ -2,24 +2,28 @@ require 'csv'
 require_relative 'district'
 require_relative 'enrollment_repository'
 require_relative 'headcount_analyst'
+require_relative 'state_wide_test_repository'
 require 'pry'
 
 
 class DistrictRepository
   attr_reader :districts,
               :enrollment_repository,
-              :headcount_analyst
+              :headcount_analyst,
+              :statewide_test_repository
 
   def initialize(districts = {})
     @districts = districts
     @enrollment_repository = EnrollmentRepository.new
     @headcount_analyst = HeadcountAnalyst.new(self)
+    @statewide_test_repository = StatewideTestRepository.new
   end
 
 
   def load_data(paths)
     generate_district_repo(paths)
     populate_kindergarten_enrollments(paths)
+    statewide_test_repository.load_data(paths)
   end
 
   def generate_district_repo(paths)
