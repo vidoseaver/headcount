@@ -9,4 +9,8 @@ class District
   def enrollment
      @district_repository.find_enrollment_by_name(name)
   end
+
+  def statewide_test
+     @district_repository.find_statewide_test_by_name(name)
+  end
 end

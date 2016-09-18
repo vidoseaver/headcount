@@ -52,8 +52,12 @@ class DistrictRepository
     end
   end
 
-
   def find_enrollment_by_name(name)
     @enrollment_repository.find_by_name(name)
+  end
+
+
+  def find_statewide_test_by_name(name)
+    @statewide_test_repository.find_by_name(name)
   end
 end
