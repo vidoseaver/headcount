@@ -61,20 +61,26 @@ attr_reader :economic_profiles
   def lunch_profile_maker(row, category)
     return unless row[:poverty_level] == "Eligible for Free or Reduced Lunch"
     profile = find_by_name(row[:location])
+    timeframe  = row[:timeframe].to_i
+    dataformat = row[:dataformat]
+    data       = row[:data].to_f
     case
-    when profile.send(category)[row[:poverty_level]].empty? && row[:dataformat] == "Percent"
-      profile.send(category)[row[:poverty_level]] = {row[:timeframe].to_i => {:percentage => row[:data].to_f}}
-    when profile.send(category)[row[:poverty_level]].empty? && row[:dataformat] == "Number"
-      profile.send(category)[row[:poverty_level]] = {row[:timeframe].to_i => {:total => row[:data].to_f}}
-    when profile.send(category)[row[:poverty_level]][row[:timeframe].to_i].nil? && row[:dataformat] == "Percent"
-      profile.send(category)[row[:poverty_level]][row[:timeframe].to_i] = {:percentage => row[:data].to_f}
-    when profile.send(category)[row[:poverty_level]][row[:timeframe].to_i].nil? && row[:dataformat] == "Number"
-      profile.send(category)[row[:poverty_level]][row[:timeframe].to_i] = {:total => row[:data].to_f}
+    when profile.send(category)[timeframe].empty? && row[:dataformat] == "Percent"
+      profile.send(category)[timeframe] = {:percentage => data}
+    when profile.send(category)[timeframe].empty? && row[:dataformat] == "Number"
+      profile.send(category)[timeframe] = {:total => data}
     when  row[:dataformat] == "Percent"
-      profile.send(category)[row[:poverty_level]][row[:timeframe].to_i].merge!({:percentage => row[:data].to_f})
+      profile.send(category)[timeframe].merge!({:percentage => data})
     when  row[:dataformat] == "Number"
-      profile.send(category)[row[:poverty_level]][row[:timeframe].to_i].merge!({:total => row[:data].to_f})
+      profile.send(category)[timeframe].merge!({:total => data})
     end
+  end
+
+  def title_profile_maker(row, category)
+    return unless row[:dataformat].downcase == "percent"
+    time = row[:timeframe].to_i
+    profile = find_by_name(row[:location])
+    profile.send(category).merge!({time => row[:data].to_f})
   end
 end
 

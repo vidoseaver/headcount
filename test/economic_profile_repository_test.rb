@@ -67,7 +67,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     end
 
     row = {location:"Colorado", poverty_level:"Eligible for Free or Reduced Lunch", timeframe:"2020", dataformat:"Percent", data:"a milli"}
-    expected = {"Eligible for Free or Reduced Lunch"=>{2000=>{:percentage=>0.27, :total=>195149.0}, 2001=>{:total=>204299.0, :percentage=>0.27528}, 2002=>{:percentage=>0.28509, :total=>214349.0}, 2003=>{:total=>228710.0, :percentage=>0.3}, 2004=>{:percentage=>0.3152, :total=>241619.0}, 2005=>{:total=>259673.0, :percentage=>0.3326}, 2006=>{:percentage=>0.337, :total=>267590.0}, 2007=>{:total=>275560.0, :percentage=>0.34}, 2008=>{:percentage=>0.3536, :total=>289404.0}, 2013=>{:total=>367980.0, :percentage=>0.41959}, 2009=>{:percentage=>0.3838, :total=>319428.0}, 2010=>{:total=>336443.0, :percentage=>0.399}, 2011=>{:percentage=>0.4085, :total=>348930.0}, 2012=>{:total=>358899.0, :percentage=>0.416}, 2014=>{:percentage=>0.41593, :total=>369760.0}, 2020=>{:percentage=>0.0}}}
+    expected = {2000=>{:percentage=>0.27, :total=>195149.0}, 2001=>{:total=>204299.0, :percentage=>0.27528}, 2002=>{:percentage=>0.28509, :total=>214349.0}, 2003=>{:total=>228710.0, :percentage=>0.3}, 2004=>{:percentage=>0.3152, :total=>241619.0}, 2005=>{:total=>259673.0, :percentage=>0.3326}, 2006=>{:percentage=>0.337, :total=>267590.0}, 2007=>{:total=>275560.0, :percentage=>0.34}, 2008=>{:percentage=>0.3536, :total=>289404.0}, 2013=>{:total=>367980.0, :percentage=>0.41959}, 2009=>{:percentage=>0.3838, :total=>319428.0}, 2010=>{:total=>336443.0, :percentage=>0.399}, 2011=>{:percentage=>0.4085, :total=>348930.0}, 2012=>{:total=>358899.0, :percentage=>0.416}, 2014=>{:percentage=>0.41593, :total=>369760.0}, 2020=>{:percentage=>0.0}}
     economic_profile = @economic_profile_repository.find_by_name("COLORADO")
 
     @economic_profile_repository.lunch_profile_maker(row, "free_or_reduced_price_lunch")
@@ -82,19 +82,11 @@ class EconomicProfileRepositoryTest < Minitest::Test
     end
 
     row = {location:"Colorado", poverty_level:"Eligible for Free or Reduced Lunch", timeframe:"2020", dataformat:"Percent", data:"a milli"}
-    expected = {"Eligible for Free or Reduced Lunch"=>{2000=>{:percentage=>0.27, :total=>195149.0}, 2001=>{:total=>204299.0, :percentage=>0.27528}, 2002=>{:percentage=>0.28509, :total=>214349.0}, 2003=>{:total=>228710.0, :percentage=>0.3}, 2004=>{:percentage=>0.3152, :total=>241619.0}, 2005=>{:total=>259673.0, :percentage=>0.3326}, 2006=>{:percentage=>0.337, :total=>267590.0}, 2007=>{:total=>275560.0, :percentage=>0.34}, 2008=>{:percentage=>0.3536, :total=>289404.0}, 2013=>{:total=>367980.0, :percentage=>0.41959}, 2009=>{:percentage=>0.3838, :total=>319428.0}, 2010=>{:total=>336443.0, :percentage=>0.399}, 2011=>{:percentage=>0.4085, :total=>348930.0}, 2012=>{:total=>358899.0, :percentage=>0.416}, 2014=>{:percentage=>0.41593, :total=>369760.0}, 2020=>{:percentage=>0.0}}}
+    expected = {2009=>0.216, 2011=>0.224, 2012=>0.22907, 2013=>0.23178, 2014=>0.23556, 2020=>0.0}
     economic_profile = @economic_profile_repository.find_by_name("COLORADO")
 
     @economic_profile_repository.title_profile_maker(row, "title_i")
 
-    assert_equal expected, economic_profile.free_or_reduced_price_lunch
+    assert_equal expected, economic_profile.title_i
   end
 end
-
-
-#
-# data = {:median_household_income => {[2014, 2015] => 50000, [2013, 2014] => 60000},
-#             :children_in_poverty => {2012 => 0.1845},
-#             :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
-#             :title_i => {2015 => 0.543},
-#            }

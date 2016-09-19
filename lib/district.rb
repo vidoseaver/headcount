@@ -13,4 +13,8 @@ class District
   def statewide_test
      @district_repository.find_statewide_test_by_name(name)
   end
+
+  def economic_profile
+    @district_repository.find_economic_profile_by_name(name)
+  end
 end

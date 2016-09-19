@@ -5,6 +5,7 @@ require 'minitest/pride'
 require './lib/district_repository'
 require './lib/district'
 require './lib/enrollment'
+require './lib/economic_profile'
 require './lib/enrollment_repository'
 
 
@@ -18,7 +19,12 @@ class DistrictRepositoryTest < Minitest::Test
                                               :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
                                               :math         => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
                                               :reading      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                                              :writing      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"}})
+                                              :writing      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"},
+                      :economic_profile => {
+                                              :median_household_income => "./data/Median household income.csv",
+                                              :children_in_poverty => "./data/School-aged children in poverty.csv",
+                                              :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv",
+                                              :title_i => "./data/Title I students.csv"}})
   end
 
   def test_that_that_district_repo_is_a_class
@@ -62,6 +68,14 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_can_find_a_enrollment_by_name
     assert_instance_of Enrollment, @district_repo.find_enrollment_by_name("Colorado")
+  end
+
+  def test_can_find_a_statewide_test_by_name
+    assert_instance_of StatewideTest, @district_repo.find_statewide_test_by_name("Colorado")
+  end
+
+  def test_can_find_a_economic_profile_by_name
+    assert_instance_of EconomicProfile, @district_repo.find_economic_profile_by_name("Colorado")
   end
 
   def test_district_repo_has_head_count_analyst

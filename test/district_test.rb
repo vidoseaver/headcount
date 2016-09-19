@@ -3,6 +3,7 @@ SimpleCov.start
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/district'
+require './lib/economic_profile'
 require './lib/district_repository'
 require "pry"
 
@@ -17,7 +18,12 @@ class DistrictTest < Minitest::Test
                                                 :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
                                                 :math         => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
                                                 :reading      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                                                :writing      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"}})
+                                                :writing      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"},
+                        :economic_profile => {
+                                                :median_household_income => "./data/Median household income.csv",
+                                                :children_in_poverty => "./data/School-aged children in poverty.csv",
+                                                :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv",
+                                                :title_i => "./data/Title I students.csv"}})
   end
 
   def test_that_destrict_repo_is_a_class
@@ -43,6 +49,18 @@ class DistrictTest < Minitest::Test
      district = @district_repo.find_by_name("COLORADO")
      assert_instance_of Enrollment, district.enrollment
      assert_equal "COLORADO", district.enrollment.name
+  end
+
+  def test_district_knows_about_its_statewide_tests
+     district = @district_repo.find_by_name("COLORADO")
+     assert_instance_of StatewideTest, district.statewide_test
+     assert_equal "COLORADO", district.statewide_test.name
+  end
+
+  def test_district_knows_about_its_economic_profiles
+     district = @district_repo.find_by_name("COLORADO")
+     assert_instance_of EconomicProfile, district.economic_profile
+     assert_equal "COLORADO", district.economic_profile.name
   end
 
   def test_enrollment_knows_kindergarten_particpation_by_year
