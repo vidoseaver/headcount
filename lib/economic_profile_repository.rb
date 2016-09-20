@@ -1,4 +1,5 @@
 require 'csv'
+require_relative 'economic_profile'
 
 class EconomicProfileRepository
 attr_reader :economic_profiles
@@ -82,19 +83,6 @@ attr_reader :economic_profiles
     profile = find_by_name(row[:location])
     profile.send(category).merge!({time => row[:data].to_f})
   end
+
+
 end
-
-# profile.send(category)[row[:poverty_level]][row[:timeframe]] != nil
-# profile.send(category)[row[:poverty_level]][row[:timeframe]] != nil
-
-
-# profile = find_by_name(row[:location])
-# if profile.send(category)[row[:poverty_level]].empty? && row[:dataformat] == "Percent"
-#   profile.send(category).merge!({row[:poverty_level] => {row[:timeframe].to_i => {:percentage => row[:data].to_f, :total => 0}}})
-# elsif profile.send(category)[row[:poverty_level]].empty? && row[:dataformat] == "Number"
-#   profile.send(category).merge!({row[:poverty_level] => {row[:timeframe].to_i => {:percentage => 0, :total => row[:data].to_f}}})
-# elsif row[:dataformat] == "Number"
-#   profile.send(category)[(row[:poverty_level])].merge!({row[:timeframe].to_i => {:total => row[:data].to_f}})
-# else
-#   profile.send(category)[(row[:poverty_level])].merge!({row[:timeframe].to_i => {:percentage => row[:data].to_f}})
-# end

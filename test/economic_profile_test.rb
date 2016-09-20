@@ -94,4 +94,9 @@ class EconomicProfileTest < Minitest::Test
     assert_equal 0.01072, profile.title_i_in_year(2012)
   end
 
+  def test_knows_average_median_house_hold_income
+    profile = @economic_profile_repository.find_by_name("ACADEMY 20")
+
+    assert_equal 87635.4, profile.average_median_household_income
+  end
 end

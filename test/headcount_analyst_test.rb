@@ -1,8 +1,11 @@
 require 'simplecov'
 SimpleCov.start
 require 'minitest/autorun'
+require 'minitest/pride'
 require './lib/headcount_analyst'
 require './lib/district_repository'
+require './lib/result_entry'
+
 require 'pry'
 
 
@@ -17,7 +20,12 @@ class HeadcountAnalystTest < Minitest::Test
                                               :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
                                               :math         => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
                                               :reading      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                                              :writing      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"}})
+                                              :writing      => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"},
+                      :economic_profile => {
+                                              :median_household_income => "./data/Median household income.csv",
+                                              :children_in_poverty => "./data/School-aged children in poverty.csv",
+                                              :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv",
+                                              :title_i => "./data/Title I students.csv"}})
     @headcount_analyst = @district_repo.headcount_analyst
   end
 
@@ -75,8 +83,95 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_can_pass_high_school_particpation_an_array
-
     districts = ["ACADEMY 20", 'PARK (ESTES PARK) R-3', 'YUMA SCHOOL DISTRICT 1']
     assert @headcount_analyst.kindergarten_participation_correlates_with_high_school_graduation(:across => districts)
+  end
+
+  def test_we_can_find_statewide_average_for_high_school_graduation_rate
+      assert_equal 0.809, @headcount_analyst.average_highschool_graduation_rate
+  end
+
+  def test_we_can_find_statewide_average_for_children_in_poverty_graduation_rate
+      assert_equal 0.163, @headcount_analyst.average_children_in_poverty_rate
+  end
+
+  def test_we_can_find_statewide_average_for_free_and_reduced_price_lunch_rate
+      assert_equal 0.408, @headcount_analyst.free_and_reduced_price_lunch_rate
+  end
+
+  def tests_the_result_entry_maker_makes_result_entries
+    data = {free_and_reduced_price_lunch_rate: 0.019, highschool_graduation_rate: 0.67, children_in_poverty_rate:0.23}
+    assert_instance_of ResultEntry, @headcount_analyst.result_entry_maker(data)
+    assert_equal 0.019, @headcount_analyst.result_entry_maker(data).free_and_reduced_price_lunch_rate
+    assert_equal 0.67,  @headcount_analyst.result_entry_maker(data).highschool_graduation_rate
+    assert_equal 0.23,  @headcount_analyst.result_entry_maker(data).children_in_poverty_rate
+  end
+
+  def test_we_can_make_entries_for_all_of_our_districts
+    assert_equal 181, @headcount_analyst.high_poverty_and_high_school_graduation_result_entries.count
+    assert @headcount_analyst.high_poverty_and_high_school_graduation_result_entries.all? {|result_entry| result_entry.is_a?(ResultEntry)}
+  end
+
+
+  def test_it_returns_an_array_of_only_the_result_entries_that_we_want
+    assert_equal 38, @headcount_analyst.all_districts_with_high_poverty_and_graduation_rate.count
+    average = @headcount_analyst.statewide_average_result_entry_for_graduation_and_poverty
+    ave_forlr = average.free_and_reduced_price_lunch_rate
+    ave_cip = average.children_in_poverty_rate
+    ave_hgr = average.high_school_graduation_rate
+    all_result_entries = @headcount_analyst.all_districts_with_high_poverty_and_graduation_rate
+    all_result_entries.all? do |result_entry|
+      ((result_entry.free_and_reduced_price_lunch_rate > ave_forlr) &&
+      (result_entry.children_in_poverty_rate          > ave_cip) &&
+      (result_entry.high_school_graduation_rate       > ave_hgr))
+    end
+  end
+
+  def result_test_maker_makes_an_instance_of_result_set
+    assert_instance_of ResultSet, @headcount_analyst.result_set_maker(dummy: "thing")
+  end
+
+  def test_high_poverty_and_high_school_graduation
+    assert_instance_of ResultSet, @headcount_analyst.high_poverty_and_high_school_graduation
+  end
+
+  def test_get_averages_of_median_house_hold_income_in_state
+    assert_equal 57408.0, @headcount_analyst.statewide_average_median_house_hold_income
+  end
+
+  def test_we_can_make_a_result_entry_with_the_mhi_and_children_in_poverty
+    result_entry = @headcount_analyst.statewide_average_result_entry_for_mhi_and_poverty
+
+    assert result_entry.is_a?(ResultEntry)
+
+    assert_equal 57408.0, result_entry.average_median_household_income
+    assert_equal 0.163,    result_entry.children_in_poverty_rate
+  end
+
+  def test_number_of_districts_above_median_household_average_average
+    assert_equal 2, @headcount_analyst.all_districts_with_high_cip_and_ami.count
+  end
+
+  def test_high_income_disparity_result_entry
+    assert_instance_of ResultSet, @headcount_analyst.high_income_disparity
+  end
+
+  def test_median_income_variation_of_district_vs_state
+    assert_equal 0.502, @headcount_analyst.kindergarten_participation_against_household_income("academy 20")
+    assert_equal 1.088, @headcount_analyst.kindergarten_participation_against_household_income("ARCHULETA COUNTY 50 JT")
+  end
+
+  def test_check_kindergarden_participation_correlates_with_house_hold_income
+    assert_equal false, @headcount_analyst.kindergarten_participation_correlates_with_household_income(for:"academy 20")
+    assert_equal true, @headcount_analyst.kindergarten_participation_correlates_with_household_income(for:"COLORADO")
+
+  end
+
+  def test_check_percentage_of_districts_accorss_the_state_that_correllate_with_kindergarten_participation
+    assert_equal false, @headcount_analyst.income_correlates_with_kindergarten(for:"academy 20")
+  end
+
+  def test_if_kindergarten_participation_correlates_with_household_income
+    assert_equal false, @headcount_analyst.kindergarten_participation_correlates_with_household_income(:across => ['ACADEMY 20', 'YUMA SCHOOL DISTRICT 1', 'WILEY RE-13 JT', 'SPRINGFIELD RE-4'])
   end
 end

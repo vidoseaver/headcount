@@ -139,12 +139,4 @@ class StatewideTestTest < Minitest::Test
 
     assert_equal expected, testing.proficient_by_grade(3)
   end
-
-  # def test_dummy
-  #
-  #   testing = @state_wide_repo.find_by_name("COTOPAXI RE-3")
-  #
-  #   assert_equal 0.13, testing.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
-  # end
-
 end

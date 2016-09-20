@@ -81,11 +81,4 @@ class StatewideTest
   def wtt(number)
     (number*1000).floor / 1000.0
   end
-
-  # def top_statewide_test_year_over_year_growth(data)
-  #   data[:grade] == 3 ? grade = third_grade : grade = eighth_grade
-  #   binding.pry
-  #   grade.values
-  #
-  # end
 end

@@ -10,7 +10,7 @@ require "pry"
 class DistrictTest < Minitest::Test
 
   def setup
-      @district_repo = DistrictRepository.new
+      @district_repo ||= DistrictRepository.new
       @district_repo.load_data({
                         :enrollment        => { :kindergarten => "./data/Kindergartners in full-day program.csv",
                                                 :high_school_graduation => "./data/High school graduation rates.csv"},
