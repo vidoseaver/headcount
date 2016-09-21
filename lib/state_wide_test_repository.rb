@@ -3,7 +3,9 @@ require "csv"
 require 'pry'
 
 class StatewideTestRepository
+
   attr_reader :state_wide_testings
+
   def initialize(district_repository = "default")
     @state_wide_testings = Hash.new
     @district_repository = district_repository
@@ -26,7 +28,6 @@ class StatewideTestRepository
 
   def state_wide_testing_maker(row)
     return if find_by_name(row[:location]) != nil
-
     name = row[:location].upcase
     state_wide_testings[name] = StatewideTest.new(name, self)
   end

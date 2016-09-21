@@ -24,9 +24,7 @@ class EnrollmentTest < Minitest::Test
 
 
   def test_kindergarten_participation_by_year
-
       expected = {2010=>0.3915, 2011=>0.35356, 2012=>0.2677}
-
       assert_equal expected, @enrollment.kindergarten_participation_by_year
   end
 
@@ -38,11 +36,10 @@ class EnrollmentTest < Minitest::Test
     assert_equal 0.391, @enrollment.kindergarten_participation_in_year(2010)
   end
 
-
-  def test_wtt_takes_make_number_into_percentage_by_thousanths
-    assert_equal 0.391, @enrollment.wtt(0.3915)
-    assert_equal 0.39,  @enrollment.wtt(0.390)
-    assert_equal 1, @enrollment.wtt(1)
+  def test_wtm_takes_make_number_into_percentage_by_thousanths
+    assert_equal 0.391, @enrollment.wtm(0.3915)
+    assert_equal 0.39,  @enrollment.wtm(0.390)
+    assert_equal 1, @enrollment.wtm(1)
   end
 
   def test_can_calculate_kindergarten_participation_rate
@@ -65,7 +62,6 @@ class EnrollmentTest < Minitest::Test
 
   def test_graduation_rates_averages
     enrollment = @enrollment_repository.find_by_name("ACADEMY 20")
-
-      assert_equal 0.898, enrollment.high_school_graduation_rate_average
+    assert_equal 0.898, enrollment.high_school_graduation_rate_average
   end
 end

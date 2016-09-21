@@ -42,7 +42,7 @@ class EconomicProfileRepository
   end
 
   def median_maker(row, category)
-    time = row[:timeframe].split("-").map {|num| num.to_i}
+    time    = row[:timeframe].split("-").map {|num| num.to_i}
     profile = find_by_name(row[:location])
     if profile.send(category)[time].empty?
       profile.send(category).merge!({time => row[:data].to_f})
@@ -89,7 +89,7 @@ class EconomicProfileRepository
 
   def title_maker(row, category)
     return unless row[:dataformat].downcase == "percent"
-    time = row[:timeframe].to_i
+    time    = row[:timeframe].to_i
     profile = find_by_name(row[:location])
     profile.send(category).merge!({time => row[:data].to_f})
   end

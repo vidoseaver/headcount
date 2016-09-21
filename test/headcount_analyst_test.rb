@@ -31,7 +31,6 @@ class HeadcountAnalystTest < Minitest::Test
 
   def test_head_count_is_a_class
     headcount = HeadcountAnalyst.new
-
     assert_equal HeadcountAnalyst, headcount.class
   end
 
@@ -50,14 +49,13 @@ class HeadcountAnalystTest < Minitest::Test
 
   def test_compare_district_kindergarten_participation_rate_variation_trend_per_year
     expected = {2007=>0.992, 2006=>1.05, 2005=>0.961, 2004=>1.258, 2008=>0.718, 2009=>0.652, 2010=>0.681, 2011=>0.728, 2012=>0.689, 2013=>0.694, 2014=>0.661}
-
     assert_equal expected , @headcount_analyst.kindergarten_participation_rate_variation_trend("academy 20", :against => "COLORADO")
   end
 
   def test_year_comparer
     data_set_one = {2007=>0.39159, 2006=>0.35364, 2005=>0.26709, 2004=>0.30201, 2008=>0.38456, 2009=>0.39, 2010=>0.43628, 2011=>0.489, 2012=>0.47883, 2013=>0.48774, 2014=>0.49022}
     data_set_two = {2007=>0.39465, 2006=>0.33677, 2005=>0.27807, 2004=>0.24014, 2008=>0.5357, 2009=>0.598, 2010=>0.64019, 2011=>0.672, 2012=>0.695, 2013=>0.70263, 2014=>0.74118}
-    expected = {2007=>0.992, 2006=>1.05, 2005=>0.961, 2004=>1.258, 2008=>0.718, 2009=>0.652, 2010=>0.681, 2011=>0.728, 2012=>0.689, 2013=>0.694, 2014=>0.661}
+    expected     = {2007=>0.992, 2006=>1.05, 2005=>0.961, 2004=>1.258, 2008=>0.718, 2009=>0.652, 2010=>0.681, 2011=>0.728, 2012=>0.689, 2013=>0.694, 2014=>0.661}
     assert_equal expected, @headcount_analyst.year_comparer(data_set_one, data_set_two)
   end
 
@@ -115,10 +113,10 @@ class HeadcountAnalystTest < Minitest::Test
 
   def test_it_returns_an_array_of_only_the_result_entries_that_we_want
     assert_equal 38, @headcount_analyst.all_districts_with_high_poverty_and_graduation_rate.count
-    average = @headcount_analyst.statewide_average_result_entry_for_graduation_and_poverty
+    average   = @headcount_analyst.statewide_average_result_entry_for_graduation_and_poverty
     ave_forlr = average.free_and_reduced_price_lunch_rate
-    ave_cip = average.children_in_poverty_rate
-    ave_hgr = average.high_school_graduation_rate
+    ave_cip   = average.children_in_poverty_rate
+    ave_hgr   = average.high_school_graduation_rate
     all_result_entries = @headcount_analyst.all_districts_with_high_poverty_and_graduation_rate
     all_result_entries.all? do |result_entry|
       ((result_entry.free_and_reduced_price_lunch_rate > ave_forlr) &&

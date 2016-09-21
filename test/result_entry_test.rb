@@ -20,9 +20,8 @@ class ResultEntryTest < Minitest::Test
   end
 
   def test_results_entry_is_a_class
-    a = ResultEntry.new(dummy: 0.3)
-
-    assert_instance_of ResultEntry, a
+    result_entry = ResultEntry.new(dummy: 0.3)
+    assert_instance_of ResultEntry, result_entry
   end
 
   def test_it_populates_free_and_reduced_price_lunch_rate_when_it_initializes

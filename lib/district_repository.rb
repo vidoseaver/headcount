@@ -39,9 +39,7 @@ class DistrictRepository
       name = row[:location].upcase
       data = {:name => name}
       check_for_objects = find_by_name(name)
-      if check_for_objects == nil
-        districts[name] = District.new(data, self)
-      end
+      districts[name] = District.new(data, self) if check_for_objects == nil
     end
   end
 

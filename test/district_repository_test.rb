@@ -31,7 +31,6 @@ class DistrictRepositoryTest < Minitest::Test
     assert_equal DistrictRepository, @district_repo.class
   end
 
-
   def test_can_load_csv_file_and_populate_district
     assert @district_repo.districts.values.all? {|district| district.is_a?(District)}
   end
@@ -47,7 +46,6 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_find_all_matching_returns_aray_of_districts_containing_word_fragment
     districts = @district_repo.find_all_matching("rado")
-
     assert_equal true, districts.all? { |district| district.name.include?("RADO") }
   end
 
@@ -61,9 +59,9 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_load_data_can_make_the_enrollment_repo_generate_enrollments
     path = {enrollment: {kindergarten: "./data/Kindergartners in full-day program.csv"}}
-   @district_repo.populate_enrollment_repository(path)
+    @district_repo.populate_enrollment_repository(path)
 
-   assert_equal 181, @district_repo.enrollment_repository.enrollments.count
+    assert_equal 181, @district_repo.enrollment_repository.enrollments.count
   end
 
   def test_can_find_a_enrollment_by_name

@@ -24,9 +24,9 @@ class StatewideTestRepositoryTest < Minitest::Test
   end
 
   def test_test_state_wide_testing_repo_is_a_class
-      a = StatewideTestRepository.new
+      state_wide_test_repository = StatewideTestRepository.new
 
-      assert_equal StatewideTestRepository, a.class
+      assert_equal StatewideTestRepository, state_wide_test_repository.class
   end
 
   def test_can_make_an_instanceof_state_wide_testings
@@ -35,7 +35,6 @@ class StatewideTestRepositoryTest < Minitest::Test
   end
 
   def test_can_iterate_through_all_csv_to_make_all_state_wide_testings
-
     assert_equal 181, @state_wide_repo.state_wide_testings.count
   end
 

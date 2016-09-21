@@ -1,30 +1,28 @@
 require_relative 'errors'
+require_relative 'magic'
 class EconomicProfile
+  include Magic
   attr_reader :name,
               :median_household_income,
               :children_in_poverty,
               :free_or_reduced_price_lunch,
               :title_i
+
   def initialize(name,parent = "parent")
     if name.class == Hash
       pass_spec_harness(name)
     else
-      @name = name
+      @name                        = name
       @economic_profile_repository = parent
-      @median_household_income = Hash.new(Hash.new)
-      @children_in_poverty = Hash.new(Hash.new)
+      @median_household_income     = Hash.new(Hash.new)
+      @children_in_poverty         = Hash.new(Hash.new)
       @free_or_reduced_price_lunch = Hash.new(Hash.new)
-      @title_i = Hash.new(Hash.new)
+      @title_i                     = Hash.new(Hash.new)
     end
-  end
-
-  def wtt(number)
-    (number*1000).floor / 1000.0
   end
 
   def median_household_income_in_year(year)
     return raise UnknownDataError unless year_checker?(year)
-
     income = median_household_income.reduce([]) do |sum,((year_1,year_2),money)|
       sum << money if year.between?(year_1,year_2)
       sum
@@ -37,11 +35,12 @@ class EconomicProfile
       year.between?(first_year,last_year)
     end
   end
+
   def pass_spec_harness(data)
-    @median_household_income = data[:median_household_income]
-    @children_in_poverty = data[:children_in_poverty]
+    @median_household_income     = data[:median_household_income]
+    @children_in_poverty         = data[:children_in_poverty]
     @free_or_reduced_price_lunch = data[:free_or_reduced_price_lunch]
-    @title_i = data[:title_i]
+    @title_i                     = data[:title_i]
   end
 
   def median_household_income_average
@@ -76,7 +75,7 @@ class EconomicProfile
     return 0 if children_in_poverty.empty?
     added_percetages = @children_in_poverty.values.reduce(:+)
     long_total = added_percetages / @children_in_poverty.length
-    wtt(long_total)
+    wtm(long_total)
   end
 
   def free_or_reduced_price_lunch_average
@@ -84,8 +83,7 @@ class EconomicProfile
     sum_percentage = free_or_reduced_price_lunch.values.reduce(0) do |sum, data|
       sum += data[:percentage]
     end
-    long_total = sum_percentage / @free_or_reduced_price_lunch.length
-    wtt(long_total)
+     wtm(sum_percentage / @free_or_reduced_price_lunch.length)
   end
 
   def average_median_household_income

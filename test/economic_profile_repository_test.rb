@@ -13,10 +13,10 @@ class EconomicProfileRepositoryTest < Minitest::Test
     @district_repository = DistrictRepository.new
     @district_repository.load_data({
       :economic_profile => {
-        :median_household_income => "./data/Median household income.csv",
-        :children_in_poverty => "./data/School-aged children in poverty.csv",
+        :median_household_income     => "./data/Median household income.csv",
+        :children_in_poverty         => "./data/School-aged children in poverty.csv",
         :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv",
-        :title_i => "./data/Title I students.csv"
+        :title_i                     => "./data/Title I students.csv"
       }
     })
     @economic_profile_repository = @district_repository.economic_profile_repository
@@ -24,7 +24,6 @@ class EconomicProfileRepositoryTest < Minitest::Test
 
   def test_head_count_is_a_class
     headcount = EconomicProfileRepository.new
-
     assert_equal EconomicProfileRepository, headcount.class
   end
 
@@ -42,10 +41,9 @@ class EconomicProfileRepositoryTest < Minitest::Test
     assert economic_profiles.all? do |profile|
       profile.median_household_income.nil?
     end
-     row = {location: "COLORADO", dataformat: "test", timeframe: "0000-1111", data: "999.9" }
 
+    row = {location: "COLORADO", dataformat: "test", timeframe: "0000-1111", data: "999.9" }
     expected ={[2005, 2009]=>56222.0, [2006, 2010]=>56456.0, [2008, 2012]=>58244.0, [2007, 2011]=>57685.0, [2009, 2013]=>58433.0, [0, 1111]=>999.9}
-
     assert_equal expected, @economic_profile_repository.median_maker(row, "median_household_income")
   end
 
@@ -54,9 +52,9 @@ class EconomicProfileRepositoryTest < Minitest::Test
     assert economic_profiles.all? do |profile|
       profile.children_in_poverty.nil?
     end
+
     row = {location:"ACADEMY 20", timeframe:"2016", dataformat:"percent", data:"0.0009"}
     expected ={1995=>0.032, 1997=>0.035, 1999=>0.032, 2000=>0.031, 2001=>0.029, 2002=>0.033, 2003=>0.037, 2004=>0.034, 2005=>0.042, 2006=>0.036, 2007=>0.039, 2008=>0.04404, 2009=>0.047, 2010=>0.05754, 2011=>0.059, 2012=>0.064, 2013=>0.048, 2016=>0.0009}
-
     assert_equal expected, @economic_profile_repository.children_maker(row, "children_in_poverty")
   end
 
@@ -71,7 +69,6 @@ class EconomicProfileRepositoryTest < Minitest::Test
     economic_profile = @economic_profile_repository.find_by_name("COLORADO")
 
     @economic_profile_repository.lunch_maker(row, "free_or_reduced_price_lunch")
-
     assert_equal expected, economic_profile.free_or_reduced_price_lunch
   end
 
@@ -86,7 +83,6 @@ class EconomicProfileRepositoryTest < Minitest::Test
     economic_profile = @economic_profile_repository.find_by_name("COLORADO")
 
     @economic_profile_repository.title_maker(row, "title_i")
-
     assert_equal expected, economic_profile.title_i
   end
 end

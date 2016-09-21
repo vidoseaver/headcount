@@ -1,7 +1,9 @@
+require_relative 'errors'
+require_relative 'magic'
 require "pry"
-require_relative "errors"
 
 class StatewideTest
+  include Magic
   attr_reader :name,
               :third_grade,
               :eighth_grade,
@@ -9,6 +11,7 @@ class StatewideTest
               :reading,
               :writing,
               :state_wide_testing
+
   def initialize(name, parent_repository)
     @name = name.upcase
     @third_grade         = Hash.new(Hash.new)
@@ -22,7 +25,7 @@ class StatewideTest
   def proficient_by_grade(grade)
     return grade_to_numbers_and_symbols(third_grade)  if grade == 3
     return grade_to_numbers_and_symbols(eighth_grade) if grade == 8
-     raise UnknownDataError
+    raise UnknownDataError
   end
 
   def grade_to_numbers_and_symbols(grade)
@@ -31,7 +34,7 @@ class StatewideTest
       year = year.to_i
       data.each do |skill, level|
          hash[year] = {skill.to_sym.downcase => level.to_f} if hash[year].nil?
-         hash[year].merge!({ skill.to_sym.downcase => wtt(level.to_f)})
+         hash[year].merge!({ skill.to_sym.downcase => wtm(level.to_f)})
        end
        hash
     end
@@ -43,7 +46,7 @@ class StatewideTest
     combined = combiner(race)
     combined.reduce({}) do |hash, (year, math, reading, writing)|
       hash[year.to_i] =
-     {math:wtt(math.to_f), reading:wtt(reading.to_f), writing:wtt(writing.to_f)}
+     {math:wtm(math.to_f), reading:wtm(reading.to_f), writing:wtm(writing.to_f)}
       hash
     end
   end
@@ -59,7 +62,7 @@ class StatewideTest
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
     return raise UnknownDataError if !value_checker?(subject,grade,year)
     grade == 3 ?  grade = third_grade : grade = eighth_grade
-    number = wtt((grade[year.to_s][subject.to_s.capitalize]).to_f)
+    number = wtm((grade[year.to_s][subject.to_s.capitalize]).to_f)
     number == 0.0 ? "N/A" : number
   end
 
@@ -79,7 +82,7 @@ class StatewideTest
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
     return raise UnknownDataError if !value_checker_two?(subject,race,year)
-    wtt((self.send(subject)[race.to_s.capitalize][year.to_s]).to_f)
+    wtm((self.send(subject)[race.to_s.capitalize][year.to_s]).to_f)
   end
 
   def value_checker_two?(subject, race, year)
@@ -89,9 +92,5 @@ class StatewideTest
     years = self.send(subject.to_s)[race.to_s.capitalize].keys
     return false unless years.include?(year.to_s)
     true
-  end
-
-  def wtt(number)
-    (number*1000).floor / 1000.0
   end
 end

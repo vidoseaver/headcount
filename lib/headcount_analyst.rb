@@ -1,9 +1,12 @@
 require "pry"
+require_relative 'magic'
 require_relative 'result_set'
 require_relative 'result_entry'
 
 
 class HeadcountAnalyst
+  include Magic
+
   def initialize(district_repo = "district_repo")
     @district_repo = district_repo
   end
@@ -87,10 +90,6 @@ class HeadcountAnalyst
     number.to_f.between?(0.7, 1.0)
   end
 
-  def wtt(number)
-    (number*1000).floor / 1000.0
-  end
-
   def variation_correlation(name)
     variation = kindergarten_participation_against_high_school_graduation(name)
     correlates?(variation)
@@ -101,7 +100,7 @@ class HeadcountAnalyst
     combined  = districts.reduce(0) do |sum, district|
       sum += district.enrollment.high_school_graduation_rate_average
     end
-    wtt(combined/districts.count)
+    wtm(combined/districts.count)
   end
 
   def average_children_in_poverty_rate
@@ -111,7 +110,7 @@ class HeadcountAnalyst
       sum += value unless value.nil?
       sum
     end
-    wtt(combined/districts.count)
+    wtm(combined/districts.count)
   end
 
   def free_and_reduced_price_lunch_rate
@@ -121,7 +120,7 @@ class HeadcountAnalyst
       sum += value unless value.nil?
       sum
     end
-    wtt(combined/districts.count)
+    wtm(combined/districts.count)
   end
 
   def statewide_average_result_entry_for_graduation_and_poverty
@@ -227,7 +226,7 @@ class HeadcountAnalyst
     second      = find_district_by_name(district_two[:against]).economic_profile
     first_rate  = first.average_median_household_income
     second_rate = second.average_median_household_income
-    rate = first_rate / second_rate
+    rate        = first_rate / second_rate
     rate.round(3)
   end
 

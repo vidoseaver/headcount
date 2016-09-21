@@ -27,15 +27,15 @@ class DistrictTest < Minitest::Test
   end
 
   def test_that_destrict_repo_is_a_class
-    a = District.new({:name => "ACADEMY 20"})
+    district = District.new({:name => "ACADEMY 20"})
 
-    assert_equal District, a.class
+    assert_equal District, district.class
   end
 
   def test_name_method_returns_upcase_district_name
-    a = District.new({:name => "academy 20"})
+    district = District.new({:name => "academy 20"})
 
-    assert_equal "ACADEMY 20", a.name
+    assert_equal "ACADEMY 20", district.name
   end
 
   def test_district_has_a_copy_of_its_parent

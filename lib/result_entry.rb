@@ -21,11 +21,11 @@ class ResultEntry
     @data[:average_median_household_income]
   end
 
-  def kindergarten_variation #needs test
+  def kindergarten_variation
     @data[:kindergarten_variation]
   end
 
-  def median_income_variation #needs test
+  def median_income_variation
     @data[:median_income_variation]
   end
 

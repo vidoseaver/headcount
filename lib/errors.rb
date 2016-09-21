@@ -3,9 +3,3 @@ class UnknownDataError < StandardError
     "UnknownDataError"
   end
 end
-
-#   class UnknownDataError < StandardError
-#   def message
-#       "UnknownRaceError"
-#   end
-# end
