@@ -36,9 +36,9 @@ class StatewideTestRepository
     contents = CSV.read(path, headers: true, header_converters: :symbol)
     contents.each do |row|
       state_wide_testing_maker(row) if find_by_name(row[:location]).nil?
-      populate_state_wide_test_1(row, "third_grade") if path.include?("3rd")
+      populate_state_wide_test_1(row, "third_grade")  if path.include?("3rd")
       populate_state_wide_test_1(row, "eighth_grade") if path.include?("8th")
-      populate_state_wide_test_2(row, "math") if path.include?("Math")
+      populate_state_wide_test_2(row, "math")         if path.include?("Math")
       populate_state_wide_test_2(row, "reading") if path.include?("Reading")
       populate_state_wide_test_2(row, "writing") if path.include?("Writing")
     end

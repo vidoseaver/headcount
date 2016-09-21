@@ -42,7 +42,7 @@ class StatewideTest
 
   def proficient_by_race_or_ethnicity(race)
     return raise UnknownDataError if math[race].nil?
-    race = race.to_s.capitalize
+    race     = race.to_s.capitalize
     combined = combiner(race)
     combined.reduce({}) do |hash, (year, math, reading, writing)|
       hash[year.to_i] =
