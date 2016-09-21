@@ -8,11 +8,13 @@ require 'pry'
 
 
 class DistrictRepository
+
   attr_reader :districts,
               :enrollment_repository,
               :headcount_analyst,
               :statewide_test_repository,
               :economic_profile_repository
+
   def initialize(districts = {})
     @districts = districts
     @headcount_analyst           = HeadcountAnalyst.new(self)
@@ -23,10 +25,12 @@ class DistrictRepository
 
 
   def load_data(path)
-    generate_district_repository(path)            if path.include?(:enrollment)
-    populate_enrollment_repository(path)          if path.include?(:enrollment)
-    populate_statewide_repository(path)           if path.include?(:statewide_testing)
-    populate_economic_profile_repository(path)    if path.include?(:economic_profile)
+    ep = :economic_profile
+    st = :statewide_testing
+    generate_district_repository(path)         if path.include?(:enrollment)
+    populate_enrollment_repository(path)       if path.include?(:enrollment)
+    populate_statewide_repository(path)        if path.include?(st)
+    populate_economic_profile_repository(path) if path.include?(ep)
   end
 
   def generate_district_repository(paths)

@@ -25,11 +25,11 @@ class EconomicProfile
   def median_household_income_in_year(year)
     return raise UnknownDataError unless year_checker?(year)
 
-    incomes = @median_household_income.reduce([]) do |sum, ((first_year,last_year), income)|
-      sum << income if year.between?(first_year,last_year)
+    income = median_household_income.reduce([]) do |sum,((year_1,year_2),money)|
+      sum << money if year.between?(year_1,year_2)
       sum
     end
-    incomes.reduce(:+)/incomes.count
+    income.reduce(:+)/income.count
   end
 
   def year_checker?(year)
@@ -81,16 +81,16 @@ class EconomicProfile
 
   def free_or_reduced_price_lunch_average
     return  0 if free_or_reduced_price_lunch.empty?
-    added_percetages = @free_or_reduced_price_lunch.values.reduce(0) do |sum, data|
+    sum_percentage = free_or_reduced_price_lunch.values.reduce(0) do |sum, data|
       sum += data[:percentage]
     end
-    long_total = added_percetages / @free_or_reduced_price_lunch.length
+    long_total = sum_percentage / @free_or_reduced_price_lunch.length
     wtt(long_total)
   end
 
   def average_median_household_income
     return  0 if median_household_income.empty?
     added_percetages = median_household_income.values.reduce(:+)
-    long_total = added_percetages / median_household_income.length
+    added_percetages / median_household_income.length
   end
 end

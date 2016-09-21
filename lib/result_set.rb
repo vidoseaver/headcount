@@ -5,6 +5,6 @@ class ResultSet
               :statewide_average
   def initialize(data)
     @matching_districts   = data[:matching_districts]
-    @statewide_average   = data[:statewide_average]
+    @statewide_average    = data[:statewide_average]
   end
 end

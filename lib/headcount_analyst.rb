@@ -13,18 +13,18 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(district_one, district_two)
-    first_enrollment = find_district_by_name(district_one).enrollment
+    first_enrollment  = find_district_by_name(district_one).enrollment
     second_enrollment = find_district_by_name(district_two[:against]).enrollment
-    first_rate = first_enrollment.kindergarten_participation_rate_average
+    first_rate        = first_enrollment.kindergarten_participation_rate_average
     second_rate = second_enrollment.kindergarten_participation_rate_average
     rate = first_rate / second_rate
     rate.round(3)
   end
 
   def kindergarten_participation_rate_variation_trend(district_one,district_two)
-    first_enrollment = find_district_by_name(district_one).enrollment
+    first_enrollment  = find_district_by_name(district_one).enrollment
     second_enrollment = find_district_by_name(district_two[:against]).enrollment
-    first_percentage = first_enrollment.kindergarten_enrollment_percentage
+    first_percentage  = first_enrollment.kindergarten_enrollment_percentage
     second_percentage = second_enrollment.kindergarten_enrollment_percentage
     year_comparer(first_percentage,second_percentage)
   end
@@ -38,22 +38,20 @@ class HeadcountAnalyst
   end
 
   def high_school_rate_variation(district_one, district_two)
-    first_enrollment = find_district_by_name(district_one).enrollment
+    first_enrollment  = find_district_by_name(district_one).enrollment
     second_enrollment = find_district_by_name(district_two[:against]).enrollment
-    first_rate = first_enrollment.high_school_graduation_rate_average
-    second_rate = second_enrollment.high_school_graduation_rate_average
+    first_rate        = first_enrollment.high_school_graduation_rate_average
+    second_rate       = second_enrollment.high_school_graduation_rate_average
     rate = first_rate / second_rate
     rate.round(3)
   end
 
   def kindergarten_participation_against_high_school_graduation(name)
-    first_enrollment = find_district_by_name(name).enrollment
-    second_enrollment = find_district_by_name("COLORADO").enrollment
-    graduation_variation =high_school_rate_variation(name,:against =>"COLORADO")
-    kind_variation =
+    graduation_variant  = high_school_rate_variation(name,:against =>"COLORADO")
+    kindergarten_variation  =
     kindergarten_participation_rate_variation(name, :against => "COLORADO")
-    return 0 if kind_variation/graduation_variation == 0
-    kind_variation/graduation_variation
+    return 0 if kindergarten_variation / graduation_variant == 0
+    kindergarten_variation / graduation_variant
   end
 
   def correlates?(number)
@@ -66,21 +64,21 @@ class HeadcountAnalyst
     districts = @district_repo.districts.keys
     return all_district_checker("variation_correlation") if name == "STATEWIDE"
     return variation_correlation(name) if districts.include?(name)
-    certain_district_checker("variation_correlation",name) if name.class==Array
+    certain_district_checker("variation_correlation",name) if name.class== Array
   end
 
   def certain_district_checker(method, district_names)
-    districts = district_names.map {|name| find_district_by_name(name)}
-    truths = districts.map do |district|
-      variation = self.send(method, district.name)
+    districts   = district_names.map {|name| find_district_by_name(name)}
+    truths      = districts.map do |district|
+    self.send(method, district.name)
     end
     above_seventy?(truths.count(true)/truths.count.to_f)
   end
 
   def all_district_checker(method)
     districts = @district_repo.districts.values
-    truths = districts.map do |district|
-    variation = self.send(method,district.name)
+    truths    = districts.map do |district|
+    self.send(method,district.name)
     end
     above_seventy?(truths.count(true)/truths.count.to_f)
   end
@@ -100,30 +98,30 @@ class HeadcountAnalyst
 
   def average_highschool_graduation_rate
     districts = @district_repo.districts.values
-    combined = districts.reduce(0) do |sum, district|
+    combined  = districts.reduce(0) do |sum, district|
       sum += district.enrollment.high_school_graduation_rate_average
     end
-    hgr_average = wtt(combined/districts.count)
+    wtt(combined/districts.count)
   end
 
   def average_children_in_poverty_rate
     districts = @district_repo.districts.values
-    combined = districts.reduce(0) do |sum, district|
-      value = district.economic_profile.children_in_poverty_average
+    combined  = districts.reduce(0) do |sum, district|
+      value   = district.economic_profile.children_in_poverty_average
       sum += value unless value.nil?
       sum
     end
-    cip_average = wtt(combined/districts.count)
+    wtt(combined/districts.count)
   end
 
   def free_and_reduced_price_lunch_rate
     districts = @district_repo.districts.values
-    combined = districts.reduce(0) do |sum, district|
-      value = district.economic_profile.free_or_reduced_price_lunch_average
+    combined  = districts.reduce(0) do |sum, district|
+      value   = district.economic_profile.free_or_reduced_price_lunch_average
       sum += value unless value.nil?
       sum
     end
-  frolr_average = wtt(combined/districts.count)
+    wtt(combined/districts.count)
   end
 
   def statewide_average_result_entry_for_graduation_and_poverty
@@ -145,9 +143,9 @@ class HeadcountAnalyst
       de = district.enrollment
       data =
       {name:district.name,
-      free_and_reduced_price_lunch_rate: dep.free_or_reduced_price_lunch_average,
-      children_in_poverty_rate:          dep.children_in_poverty_average,
-      high_school_graduation_rate:       de.high_school_graduation_rate_average}
+      free_and_reduced_price_lunch_rate:dep.free_or_reduced_price_lunch_average,
+      children_in_poverty_rate:         dep.children_in_poverty_average,
+      high_school_graduation_rate:      de.high_school_graduation_rate_average}
       result_entry_maker(data)
     end
   end
@@ -171,7 +169,8 @@ class HeadcountAnalyst
 
   def high_poverty_and_high_school_graduation
     matching_districts = all_districts_with_high_poverty_and_graduation_rate
-    statewide_average = statewide_average_result_entry_for_graduation_and_poverty
+    statewide_average  =
+    statewide_average_result_entry_for_graduation_and_poverty
     matching_districts_and_statewide_average =
     {matching_districts:  matching_districts,
       statewide_average:    statewide_average}
@@ -180,7 +179,7 @@ class HeadcountAnalyst
 
   def statewide_average_median_house_hold_income
     colorado = find_district_by_name("COLORADO")
-    statewide_average = colorado.economic_profile.average_median_household_income
+    colorado.economic_profile.average_median_household_income
   end
 
   def statewide_average_result_entry_for_mhi_and_poverty
@@ -204,19 +203,19 @@ class HeadcountAnalyst
   end
 
   def all_districts_with_high_cip_and_ami
-    average = statewide_average_result_entry_for_mhi_and_poverty
-    ave_cip =   average.children_in_poverty_rate
+    average    = statewide_average_result_entry_for_mhi_and_poverty
+    ave_cip    = average.children_in_poverty_rate
     ave_samhdi = average.average_median_household_income
     all_result_entries = high_poverty_and_high_median_income_result_entries
     all_result_entries.select do |result_entry|
-      ((result_entry.children_in_poverty_rate              > ave_cip) &&
-      (result_entry.average_median_household_income       > ave_samhdi))
+      ((result_entry.children_in_poverty_rate        > ave_cip) &&
+      (result_entry.average_median_household_income  > ave_samhdi))
     end
   end
 
   def high_income_disparity
     matching_districts = all_districts_with_high_cip_and_ami
-    statewide_average = statewide_average_result_entry_for_mhi_and_poverty
+    statewide_average  = statewide_average_result_entry_for_mhi_and_poverty
     matching_districts_and_statewide_average =
     {matching_districts:  matching_districts,
       statewide_average:    statewide_average}
@@ -224,21 +223,22 @@ class HeadcountAnalyst
   end
 
   def median_income_variation(district_one, district_two)
-    first = find_district_by_name(district_one).economic_profile
-    second = find_district_by_name(district_two[:against]).economic_profile
-    first_rate = first.average_median_household_income
+    first       = find_district_by_name(district_one).economic_profile
+    second      = find_district_by_name(district_two[:against]).economic_profile
+    first_rate  = first.average_median_household_income
     second_rate = second.average_median_household_income
     rate = first_rate / second_rate
     rate.round(3)
   end
 
   def kindergarten_participation_against_household_income(district_name)
-    district_name = district_name.upcase
-    colorado = {against:"COLORADO"}
+    district_name    = district_name.upcase
+    colorado         = {against:"COLORADO"}
     income_variation = median_income_variation(district_name,colorado)
-    kinder_variation = kindergarten_participation_rate_variation(district_name,colorado)
+    kindergarten_variation =
+    kindergarten_participation_rate_variation(district_name,colorado)
     return 0 if income_variation == 0
-    total = kinder_variation/income_variation
+    total = kindergarten_variation/income_variation
     total.round(3)
   end
 
@@ -252,10 +252,10 @@ class HeadcountAnalyst
 
   def income_correlates_with_kindergarten(name)
     name.class == Array ? names = name : names = @district_repo.districts.keys
-    trues = names.reduce([]) do |sum, name|
-      sum << kindergarten_participation_correlates_with_household_income(for: name)
+    trues  = names.reduce([]) do |sum, name|
+      name = {for:name}
+      sum << kindergarten_participation_correlates_with_household_income(name)
     end
     above_seventy?(trues.count(true)/trues.count)
   end
-
 end

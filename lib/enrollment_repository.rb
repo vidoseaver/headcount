@@ -2,7 +2,9 @@ require 'csv'
 require_relative 'enrollment'
 
 class EnrollmentRepository
+
   attr_reader :enrollments
+
   def initialize
     @enrollments = {}
   end
@@ -24,7 +26,7 @@ class EnrollmentRepository
   def assign_instance_of_enrollment(row)
       @enrollments[row[:location].upcase] =
       Enrollment.new({:name => row[:location], :kindergarten_participation =>
-      { row[:timeframe].to_i => row[:data].to_f}})
+      {row[:timeframe].to_i => row[:data].to_f}})
   end
 
   def add_data_to_enrollment(row)

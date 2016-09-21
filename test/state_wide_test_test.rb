@@ -34,10 +34,6 @@ class StatewideTestTest < Minitest::Test
     assert @state_wide_testing.third_grade.values.empty?
   end
 
-  def test_can_add_to_third_grade
-
-  end
-
   def test_third_grade_initializes_with_empty_hash
     assert @state_wide_testing.third_grade.values.empty?
   end
@@ -79,6 +75,13 @@ class StatewideTestTest < Minitest::Test
     testing = @state_wide_repo.find_by_name("WOODLAND PARK RE-2")
     expected = {2011=>{:math=>0.451, :reading=>0.688, :writing=>0.503}, 2012=>{:math=>0.467, :reading=>0.75, :writing=>0.528}, 2013=>{:math=>0.473, :reading=>0.738, :writing=>0.531}, 2014=>{:math=>0.418, :reading=>0.006, :writing=>0.453}}
    assert_equal expected, testing.proficient_by_race_or_ethnicity(:hispanic)
+  end
+
+  def test_subject_is_math_reading_or_writing
+    assert @colorado.subject_is_math_reading_or_writing?(:math)
+    assert @colorado.subject_is_math_reading_or_writing?(:reading)
+    assert @colorado.subject_is_math_reading_or_writing?(:writing)
+    refute @colorado.subject_is_math_reading_or_writing?(:science)
   end
 
   def test_can_return_unknown_data_error_if_subject_doesnt_exist

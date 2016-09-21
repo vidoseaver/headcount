@@ -45,20 +45,21 @@ class StatewideTestRepository
 
   def populate_state_wide_test_1(row, category)
     testing = find_by_name(row[:location])
+    rowdata = row[:data].to_f
     if testing.send(category)[row[:timeframe]].empty?
-      testing.send(category).merge!(row[:timeframe] => {row[:score] => row[:data].to_f})
+      testing.send(category).merge!(row[:timeframe] => {row[:score] => rowdata})
     else
-      testing.send(category)[(row[:timeframe])].merge!({row[:score] => row[:data].to_f})
+      testing.send(category)[(row[:timeframe])].merge!({row[:score] => rowdata})
     end
   end
 
   def populate_state_wide_test_2(row, category)
-    testing = find_by_name(row[:location])
-
-    if testing.send(category)[row[:race_ethnicity]].empty?
-      testing.send(category).merge!(row[:race_ethnicity] => {row[:timeframe] => row[:data]})
+    testing  = find_by_name(row[:location])
+    category = testing.send(category)
+    if category[row[:race_ethnicity]].empty?
+      category.merge!(row[:race_ethnicity] => {row[:timeframe] => row[:data]})
     else
-      testing.send(category)[(row[:race_ethnicity])].merge!({row[:timeframe] => row[:data]})
+      category[(row[:race_ethnicity])].merge!({row[:timeframe] => row[:data]})
     end
   end
 end
